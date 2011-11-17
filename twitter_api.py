@@ -1,26 +1,26 @@
 import optparse
 import sys
 
-import twitter
+from twython import Twython
 import util
 
 def search(searchTerm):
     """
     Print recent tweets containing `searchTerm`.
     """
-    api = twitter.Api()
-    tweets = api.GetSearch(searchTerm)
+    api = Twython()
+    tweets = api.search(q=searchTerm)['results']
     for tweet in tweets:
-        util.safe_print(tweet.GetText())
+        util.safe_print(tweet['text'])
 
 def trendingTopics():
     """
     Print the currently trending topics.
     """
-    api = twitter.Api()
-    trending_topics = api.GetTrendsCurrent()
+    api = Twython()
+    trending_topics = api.trendsByLocation()[0]['trends']
     for topic in trending_topics:
-        util.safe_print(topic.name)
+        util.safe_print(topic['name'])
 
 def userTweets(username):
     """
