@@ -1,26 +1,27 @@
 import optparse
 import sys
 
-import twitter
+from twitter import Twitter
+
 import util
 
 def search(searchTerm):
     """
     Print recent tweets containing `searchTerm`.
     """
-    api = twitter.Api()
-    tweets = api.GetSearch(searchTerm)
-    for tweet in tweets:
-        util.safe_print(tweet.GetText())
+    twitter = Twitter()
+    result = twitter.search(q=searchTerm)
+    for tweet in result['results']:
+        util.safe_print(tweet['text'])
 
 def trendingTopics():
     """
     Print the currently trending topics.
     """
-    api = twitter.Api()
-    trending_topics = api.GetTrendsCurrent()
-    for topic in trending_topics:
-        util.safe_print(topic.name)
+    twitter = Twitter()
+    result = twitter.trends._woeid(_woeid=1)
+    for trend in result[0]['trends']:
+        util.safe_print(trend['name'])
 
 def userTweets(username):
     """
